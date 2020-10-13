@@ -7,7 +7,7 @@
     <div class="header">
     <h2>My To Do List</h2>
     <form method="POST" action="{{ path('create-task') }}">
-        <input type="text" id="myInput" placeholder="Task title..." />
+        <input type="text" name="title" id="myInput" placeholder="Task title..." />
         <button type="submit" class="addBtn">Add a task</button>
     </form>
     </div>

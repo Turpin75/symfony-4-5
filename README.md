@@ -1,2 +1,2 @@
-# my_project
+# My project
 To Do App with symfony 5

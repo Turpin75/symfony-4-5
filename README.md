@@ -1,2 +1,2 @@
 # My project
-To Do App with symfony 5
+To do list with symfony 5

@@ -59,7 +59,12 @@ class ToDoListController extends AbstractController
     */
     public function switchStatus($id)
     {
-        exit("Switch status task $id!");
+        $task = $this->taskRepository->find($id);
+        $task->setStatus(!$task->getStatus());
+
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('to-do-list');
     }
 
     /**

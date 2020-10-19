@@ -70,8 +70,11 @@ class ToDoListController extends AbstractController
     /**
      * @Route("/delete/{id}", name="delete-task")
      */
-    public function delete($id)
+    public function delete(Task $task)
     {
-        exit("Switch status task $id!");
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('to-do-list');
+
     }
 }

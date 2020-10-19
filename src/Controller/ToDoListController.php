@@ -7,24 +7,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\TaskRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ToDoListController extends AbstractController
 {
+    private $taskRepository;
+    private $entityManager;
+    
+    function __construct(TaskRepository $taskRepository, EntityManagerInterface $entityManager)
+    {
+        $this->taskRepository = $taskRepository;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @Route("/todolist", name="to-do-list")
      */
     public function index()
     {
+        $tasks = $this->taskRepository->findBy([], ['id' => 'DESC']);
+        
         return $this->render('to_do_list/index.html.twig', [
-            'controller_name' => 'ToDoListController',
+            'tasks' => $tasks
         ]);
     }
 
     /**
      * @Route("/create", name="create-task", methods={"POST"})
      */
-    public function create(Request $request, TaskRepository $repoTask, EntityManagerInterface $entityManager)
+    public function create(Request $request)
     {   
         $title = trim($request->request->get('title'));
 
@@ -36,8 +48,8 @@ class ToDoListController extends AbstractController
         $task = new Task;
         $task->setTitle($title);
 
-        $entityManager->persist($task);
-        $entityManager->flush();
+        $this->entityManager->persist($task);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('to-do-list');
     }

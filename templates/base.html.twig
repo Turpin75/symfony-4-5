@@ -31,7 +31,7 @@
           <h5 class="my-0 mr-md-auto font-weight-normal"><a href="index.php">Awesome Videos</a>
           </h5>
 
-          <form method="POST" class="form-inline my-0 mr-md-auto" action="search_results.php">
+          <form method="POST" class="form-inline my-0 mr-md-auto" action="{{path('search_results')}}">
               <input class="form-control mr-sm-2" type="search" placeholder="video title" aria-label="Search video">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search video</button>
           </form>
@@ -44,8 +44,8 @@
               <a class="p-2 text-dark" href="{{path('video_list')}}">Scary</a>
               <a class="p-2 text-dark" href="admin/my_profile.php">My account</a>
           </nav>
-          <a class="btn btn-outline-primary mr-2" href="pricing.php">Sign up</a>
-          <a class="btn btn-outline-primary" href="login.php">Sign in</a>
+          <a class="btn btn-outline-primary mr-2" href="{{path('pricing')}}">Sign up</a>
+          <a class="btn btn-outline-primary" href="{{path('login')}}">Sign in</a>
         </div>
       {% endblock %}
 
@@ -93,17 +93,17 @@
         </footer>
       {% endblock %}
     </div>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="{{asset('assets/js/jquery.js')}}"></script>
-<script src="{{asset('assets/js/popper.js')}}"></script>
-<script src="{{asset('assets/js/bootstrap.js')}}"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{asset('assets/js/jquery.js')}}"></script>
+    <script src="{{asset('assets/js/popper.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.js')}}"></script>
 
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-</script>
-{% block customjavascript %}{% endblock %}
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+    {% block customjavascripts %}{% endblock %}
 </body>
 </html>

@@ -12,7 +12,12 @@ class CategoryFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
       $this->loadMainCategories($manager);
-      $this->loadElectronics($manager);
+      $this->loadSubCategories($manager, 'Electronics');
+      $this->loadSubCategories($manager, 'Computers');
+      $this->loadSubCategories($manager, 'Laptops');
+      $this->loadSubCategories($manager, 'Books');
+      $this->loadSubCategories($manager, 'Movies');
+      $this->loadSubCategories($manager, 'Romance');
     }
 
     private function loadMainCategories($manager)
@@ -27,16 +32,18 @@ class CategoryFixtures extends Fixture
         $manager->flush();
     }
 
-    private function loadElectronics($manager)
+    public function loadSubCategories($manager, $category)
     {
-        foreach($this->getElectronicsData() as $name)
-       {
-            $parent = $manager->getRepository(Category::class)->findOneBy(['name' => 'Electronics']);
+
+        $parent = $manager->getRepository(Category::class)->findOneBy(['name' => $category]);
+        $methodName = "get{$category}Data";
+        foreach($this->$methodName() as $name)
+        {
             $category = new Category();
             $category->setName($name);
             $category->setParent($parent);
             $manager->persist($category);
-       }
+        }
 
         $manager->flush();
     }
@@ -50,5 +57,31 @@ class CategoryFixtures extends Fixture
     {
        return ['Cameras', 'Computers', 'Cell Phones'];
     }
+    private function getComputersData()
+    {
+        return ['Laptops', 'Desktops'];
+    }
+
+    private function getLaptopsData()
+    {
+        return ['Apple', 'Asus', 'Dell', 'Lenovo', 'HP'];
+    }
+
+    private function getBooksData()
+    {
+        return ['Children', 'Kindle eBooks'];
+    }
+
+    private function getMoviesData()
+    {
+        return ['Family', 'Romance'];
+    }
+
+    private function getRomanceData()
+    {
+        return ['Romantic Comedy', 'Romantic Drama'];
+    }
+
+
 
 }

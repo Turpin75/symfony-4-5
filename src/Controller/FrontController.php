@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
+use App\Service\CategoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -72,9 +73,9 @@ class FrontController extends AbstractController
         return $this->render('front/payment.html.twig');
     }
     
-    public function mainCategories(CategoryRepository $categoryRepo)
+    public function mainCategories(CategoryRepository $categoryRepo, CategoryService $categoryService)
     {
-        $categories = $categoryRepo->findBy(['parent' => null], ['name' => 'ASC']);
+        $categories = $categoryService->mainCategories();
         return $this->render('front/_main_categories.html.twig', [
             'categories' => $categories
         ]);

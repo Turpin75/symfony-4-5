@@ -2,14 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Service\CategoryService;
-use App\Utils\CategoryTreeFrontPage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AbstractController
 {
+    private $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+    
     /**
      * @Route("/", name="main_page")
      */
@@ -19,11 +26,12 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/video-list/category/{categoryName}/{id}", name="video_list")
+     * @Route("/video-list/category/{name}/{id}", name="video_list")
      */
-    public function videoList($id, CategoryTreeFrontPage $categories)
+    public function videoList(Category $category)
     {
-        dump($categories);
+        $subCategories = $this->categoryService->getSubCategories($category);
+        
         return $this->render('front/video_list.html.twig');
     }
 
@@ -75,9 +83,9 @@ class FrontController extends AbstractController
         return $this->render('front/payment.html.twig');
     }
     
-    public function mainCategories(CategoryRepository $categoryRepo, CategoryService $categoryService)
+    public function getMainCategories(CategoryRepository $categoryRepo, CategoryService $categoryService)
     {
-        $categories = $categoryService->mainCategories();
+        $categories = $categoryService->getMainCategories();
         return $this->render('front/_main_categories.html.twig', [
             'categories' => $categories
         ]);

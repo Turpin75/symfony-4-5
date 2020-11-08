@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+use App\Entity\SubCategories;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -11,7 +12,8 @@ class CategoryFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-      $this->loadMainCategories($manager);
+      $this->loadTopCategories($manager);
+      $this->loadCategories($manager);
       $this->loadSubCategories($manager, 'Electronics');
       $this->loadSubCategories($manager, 'Computers');
       $this->loadSubCategories($manager, 'Laptops');
@@ -20,9 +22,22 @@ class CategoryFixtures extends Fixture
       $this->loadSubCategories($manager, 'Romance');
     }
 
-    private function loadMainCategories($manager)
+    private function loadTopCategories($manager)
     {
-        foreach($this->getMainCategoriesData() as $name)
+        foreach($this->getTopCategoriesData() as $name)
+       {
+            $topCategory = new Category();
+            $topCategory->setName($name);
+            $topCategory->setIsTopCategory(TRUE);
+            $manager->persist($topCategory);
+       }
+
+        $manager->flush();
+    }
+
+    private function loadCategories($manager)
+    {
+        foreach($this->getCategoriesData() as $name)
        {
             $category = new Category();
             $category->setName($name);
@@ -39,18 +54,31 @@ class CategoryFixtures extends Fixture
         $methodName = "get{$category}Data";
         foreach($this->$methodName() as $name)
         {
-            $category = new Category();
-            $category->setName($name);
-            $category->setParent($parent);
-            $manager->persist($category);
+            $subCategory = new SubCategories();
+            $subCategory->setName($name);
+            $parent->addSubcategory($subCategory);
+            $manager->persist($subCategory);
         }
 
         $manager->flush();
     }
 
-    private function getMainCategoriesData()
+    private function getTopCategoriesData()
     {
-       return ['Electronics', 'Toys', 'Books', 'Movies']; 
+        return [
+            'Electronics', 'Toys', 'Books', 'Movies'
+        ]; 
+    }
+
+    private function getCategoriesData()
+    {
+        return [
+            'Cameras', 'Computers', 'Cell Phones', 
+            'Laptops', 'Desktops', 
+            'Apple', 'Asus', 'Dell', 'Lenovo', 'HP', 
+            'Children', 'Kindle eBooks', 'Family', 'Romance', 
+            'Romantic Comedy', 'Romantic Drama'
+        ]; 
     }
 
     private function getElectronicsData()

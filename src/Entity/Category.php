@@ -26,24 +26,24 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subcategories")
-     */
-    private $parent;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="parent")
-     */
-    private $subcategories;
-
-    /**
      * @ORM\OneToMany(targetEntity=Video::class, mappedBy="category")
      */
     private $videos;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SubCategories::class, mappedBy="category")
+     */
+    private $subCategories;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isTopCategory;
+
     public function __construct()
     {
-        $this->subcategories = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,49 +59,6 @@ class Category
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getParent(): ?self
-    {
-        return $this->parent;
-    }
-
-    public function setParent(?self $parent): self
-    {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|self[]
-     */
-    public function getSubcategories(): Collection
-    {
-        return $this->subcategories;
-    }
-
-    public function addSubcategory(self $subcategory): self
-    {
-        if (!$this->subcategories->contains($subcategory)) {
-            $this->subcategories[] = $subcategory;
-            $subcategory->setParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSubcategory(self $subcategory): self
-    {
-        if ($this->subcategories->contains($subcategory)) {
-            $this->subcategories->removeElement($subcategory);
-            // set the owning side to null (unless already changed)
-            if ($subcategory->getParent() === $this) {
-                $subcategory->setParent(null);
-            }
-        }
 
         return $this;
     }
@@ -133,6 +90,49 @@ class Category
                 $video->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SubCategories[]
+     */
+    public function getSubCategories(): Collection
+    {
+        return $this->subCategories;
+    }
+
+    public function addSubCategory(SubCategories $subCategory): self
+    {
+        if (!$this->subCategories->contains($subCategory)) {
+            $this->subCategories[] = $subCategory;
+            $subCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategory(SubCategories $subCategory): self
+    {
+        if ($this->subCategories->contains($subCategory)) {
+            $this->subCategories->removeElement($subCategory);
+            // set the owning side to null (unless already changed)
+            if ($subCategory->getCategory() === $this) {
+                $subCategory->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsTopCategory(): ?bool
+    {
+        return $this->isTopCategory;
+    }
+
+    public function setIsTopCategory(?bool $isTopCategory): self
+    {
+        $this->isTopCategory = $isTopCategory;
 
         return $this;
     }

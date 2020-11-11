@@ -16,7 +16,7 @@ class FrontController extends AbstractController
     {
         $this->categoryService = $categoryService;
     }
-    
+
     /**
      * @Route("/", name="main_page")
      */
@@ -30,8 +30,9 @@ class FrontController extends AbstractController
      */
     public function videoList(Category $category)
     {
-        $subCategories = $this->categoryService->getSubCategories($category);
-        
+        $subCategories = $this->categoryService->getAllSubCategories($category);
+        dd($subCategories);
+
         return $this->render('front/video_list.html.twig');
     }
 
@@ -74,7 +75,7 @@ class FrontController extends AbstractController
     {
         return $this->render('front/login.html.twig');
     }
-    
+
     /**
      * @Route("/payment", name="payment")
      */
@@ -82,7 +83,7 @@ class FrontController extends AbstractController
     {
         return $this->render('front/payment.html.twig');
     }
-    
+
     public function getMainCategories(CategoryRepository $categoryRepo, CategoryService $categoryService)
     {
         $categories = $categoryService->getMainCategories();

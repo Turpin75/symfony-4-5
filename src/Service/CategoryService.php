@@ -4,17 +4,17 @@ namespace App\Service;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
-use App\Repository\SubCategoriesRepository;
+use App\Repository\SubCategoryRepository;
 
 class CategoryService
 {
     private $categoryRepo;
-    private $subCategories;
-    
-    public function __construct(CategoryRepository $categoryRepo, SubCategoriesRepository $subCategoriesRepo)
+    private $subCategoryRepo;
+
+    public function __construct(CategoryRepository $categoryRepo, SubCategoryRepository $subCategoryRepo)
     {
         $this->categoryRepo = $categoryRepo;
-        $this->subCategoriesRepo = $subCategoriesRepo;
+        $this->subCategoryRepo = $subCategoryRepo;
     }
 
     public function getMainCategories()
@@ -26,8 +26,14 @@ class CategoryService
 
     public function getSubCategories(Category $category)
     {
-        $subCategories = $this->subCategoriesRepo->findBy(['category' => $category]);
+        $subCategories = $this->subCategoryRepo->findBy(['category' => $category]);
+
         return $subCategories;
+    }
+
+    public function getAllSubCategories($category)
+    {
+
     }
 
 }

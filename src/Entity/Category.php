@@ -31,14 +31,14 @@ class Category
     private $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=SubCategories::class, mappedBy="category")
-     */
-    private $subCategories;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isTopCategory;
+
+    /**
+     * @ORM\OneToMany(targetEntity=SubCategory::class, mappedBy="category")
+     */
+    private $subCategories;
 
     public function __construct()
     {
@@ -94,15 +94,27 @@ class Category
         return $this;
     }
 
+    public function getIsTopCategory(): ?bool
+    {
+        return $this->isTopCategory;
+    }
+
+    public function setIsTopCategory(?bool $isTopCategory): self
+    {
+        $this->isTopCategory = $isTopCategory;
+
+        return $this;
+    }
+
     /**
-     * @return Collection|SubCategories[]
+     * @return Collection|SubCategory[]
      */
     public function getSubCategories(): Collection
     {
         return $this->subCategories;
     }
 
-    public function addSubCategory(SubCategories $subCategory): self
+    public function addSubCategory(SubCategory $subCategory): self
     {
         if (!$this->subCategories->contains($subCategory)) {
             $this->subCategories[] = $subCategory;
@@ -112,7 +124,7 @@ class Category
         return $this;
     }
 
-    public function removeSubCategory(SubCategories $subCategory): self
+    public function removeSubCategory(SubCategory $subCategory): self
     {
         if ($this->subCategories->contains($subCategory)) {
             $this->subCategories->removeElement($subCategory);
@@ -125,15 +137,4 @@ class Category
         return $this;
     }
 
-    public function getIsTopCategory(): ?bool
-    {
-        return $this->isTopCategory;
-    }
-
-    public function setIsTopCategory(?bool $isTopCategory): self
-    {
-        $this->isTopCategory = $isTopCategory;
-
-        return $this;
-    }
 }

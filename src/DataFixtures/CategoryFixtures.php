@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\SubCategories;
+use App\Entity\SubCategory;
 use App\Repository\CategoryRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -26,7 +26,7 @@ class CategoryFixtures extends Fixture
     {
         foreach($this->getTopCategoriesData() as $name)
        {
-            $topCategory = new Category();
+            $topCategory = new Category;
             $topCategory->setName($name);
             $topCategory->setIsTopCategory(TRUE);
             $manager->persist($topCategory);
@@ -47,16 +47,18 @@ class CategoryFixtures extends Fixture
         $manager->flush();
     }
 
-    public function loadSubCategories($manager, $category)
+    public function loadSubCategories($manager, $categoryName)
     {
 
-        $parent = $manager->getRepository(Category::class)->findOneBy(['name' => $category]);
-        $methodName = "get{$category}Data";
+        $category = $manager->getRepository(Category::class)->findOneBy(['name' => $categoryName]);
+
+        $methodName = "get{$categoryName}Data";
+
         foreach($this->$methodName() as $name)
         {
-            $subCategory = new SubCategories();
+            $subCategory = new SubCategory;
             $subCategory->setName($name);
-            $parent->addSubcategory($subCategory);
+            $category->addSubCategory($subCategory);
             $manager->persist($subCategory);
         }
 
@@ -67,18 +69,18 @@ class CategoryFixtures extends Fixture
     {
         return [
             'Electronics', 'Toys', 'Books', 'Movies'
-        ]; 
+        ];
     }
 
     private function getCategoriesData()
     {
         return [
-            'Cameras', 'Computers', 'Cell Phones', 
-            'Laptops', 'Desktops', 
-            'Apple', 'Asus', 'Dell', 'Lenovo', 'HP', 
-            'Children', 'Kindle eBooks', 'Family', 'Romance', 
+            'Cameras', 'Computers', 'Cell Phones',
+            'Laptops', 'Desktops',
+            'Apple', 'Asus', 'Dell', 'Lenovo', 'HP',
+            'Children', 'Kindle eBooks', 'Family', 'Romance',
             'Romantic Comedy', 'Romantic Drama'
-        ]; 
+        ];
     }
 
     private function getElectronicsData()

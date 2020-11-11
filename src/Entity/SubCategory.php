@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SubCategoriesRepository;
+use App\Repository\SubCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SubCategoriesRepository::class)
+ * @ORM\Entity(repositoryClass=SubCategoryRepository::class)
  */
-class SubCategories
+class SubCategory
 {
     /**
      * @ORM\Id
@@ -18,7 +18,7 @@ class SubCategories
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $name;
 

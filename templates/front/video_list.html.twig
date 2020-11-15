@@ -8,7 +8,7 @@
         <section class="jumbotron text-center">
             <div class="container">
 
-                <h1 class="jumbotron-heading">Category - Funny</h1>
+                <h1 class="jumbotron-heading">Category - {{ category.name }}</h1>
                 <div class="btn-group">
                     <div class="dropdown ml-2">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -17,15 +17,18 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <ul class="mr-5">
-                                <li><a href="#">Funny</a></li>
-                                <ul>
-                                    <li><a href="#">Surprising</a></li>
-                                    <li><a href="#">Exciting</a></li>
-                                    <ul>
-                                        <li><a href="#">Strange</a></li>
-                                        <li><a href="#">Relaxing</a></li>
-                                    </ul>
-                                </ul>
+                                <li><a href="#">{{ category.name }}</a></li>
+                                {% if category.name == 'Electronics' %}
+                                    {% include('front/_electronics.html.twig') %}
+                                {% endif %}
+
+                                {% if category.name == 'Books' %}
+                                    {% include('front/_books.html.twig') %}
+                                {% endif %}
+
+                                {% if category.name == 'Movies' %}
+                                    {% include('front/_movies.html.twig') %}
+                                {% endif %}
                             </ul>
                         </div>
                     </div>

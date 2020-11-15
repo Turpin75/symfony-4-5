@@ -30,10 +30,11 @@ class FrontController extends AbstractController
      */
     public function videoList(Category $category)
     {
-        $subCategories = $this->categoryService->getAllSubCategories($category);
-        dd($subCategories);
+        $subCategories = $this->categoryService->getSubCategories($category);
 
-        return $this->render('front/video_list.html.twig');
+        return $this->render('front/video_list.html.twig', [
+            'category' => $category
+        ]);
     }
 
     /**
